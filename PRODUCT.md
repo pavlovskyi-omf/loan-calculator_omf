@@ -55,3 +55,23 @@ Term selection UX:
 - Results update correctly and consistently with the defined triggers
 - Input validation prevents misleading outputs
 - Works well on mobile with stacked layout
+
+## Implementation notes (current)
+
+- Domain utilities implemented and tested: `loanMath.ts`, `currency.ts`, `validation.ts`.
+- Components implemented (behavior-first, unstyled):
+  - `LoanAmountInput` — currency parsing, inline validation, Calculate button commits amount
+  - `AprControl` (`AprControlNew.tsx`) — slider + +/- buttons, integer stepping
+  - `AmountTabs` — three comparison amounts (committed - 1000, committed, committed + 1000) with clamping and deduping
+  - `PaymentTable` — grid of monthly payments for each term and amount
+  - `SelectedDetails` — monthly payment, total paid, total interest for selected scenario
+- `App.tsx` wired the components and state: `committedAmount`, `apr`, `selectedAmountIndex`, `selectedTerm`.
+- Tests: Vitest + React Testing Library tests cover domain logic, components, and an integration test. All tests in the repo currently pass.
+
+## Known limitations & next steps
+
+- Styling: UI is functionally complete but unstyled. Add Tailwind CSS and MUI theming to match the reference layout.
+- Accessibility: basic ARIA attributes added; run an a11y audit and improve keyboard/visual focus styles.
+- No build or CI pipeline configured (skipped per request). Add GitHub Actions for builds and deploy to GitHub Pages when ready.
+- Mobile polish: responsive layout assumed in architecture; finalize CSS and test on real devices.
+

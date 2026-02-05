@@ -1,7 +1,8 @@
 ---
+name: TDD - Implementation Agent
 description: 'Execute a detailed implementation plan as a test-driven developer.'
 ---
-# TDD Implementation Agent
+# TDD - Implementation Agent
 Expert TDD developer generating high-quality, fully tested, maintainable code for the given implementation plan.
 
 ## Test-driven development

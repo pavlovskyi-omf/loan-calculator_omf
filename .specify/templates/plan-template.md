@@ -31,7 +31,33 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**Domain Purity**: ✅ / ⚠️ / ❌
+- [ ] All business logic in pure functions (no framework dependencies)
+- [ ] Domain functions independently testable
+- [ ] Explicit TypeScript types for public APIs
+
+**Test-First Development**: ✅ / ⚠️ / ❌  
+- [ ] Domain layer has 100% test coverage plan
+- [ ] Tests written before/alongside implementation
+- [ ] Edge cases and boundary conditions covered
+
+**UI/Logic Separation**: ✅ / ⚠️ / ❌
+- [ ] Clear layer boundaries (domain/component/app)
+- [ ] Components delegate to domain functions
+- [ ] No business logic in UI components
+
+**Configuration-Driven**: ✅ / ⚠️ / ❌
+- [ ] Constants centralized in config
+- [ ] No magic numbers in components
+- [ ] Business rules documented in config
+
+**Accessibility & UX**: ✅ / ⚠️ / ❌
+- [ ] Keyboard navigation planned
+- [ ] ARIA attributes for screen readers
+- [ ] Responsive design considerations
+- [ ] Form validation with inline feedback
+
+[Additional gates from constitution if applicable]
 
 ## Project Structure
 
@@ -89,6 +115,16 @@ api/
 
 ios/ or android/
 └── [platform-specific structure: feature modules, UI flows, platform tests]
+
+# [REMOVE IF UNUSED] Option 4: React SPA with domain layer (client-side only)
+src/
+├── domain/          # Pure functions: calculations, validation, formatting
+├── components/      # Presentational UI components
+├── app/             # State orchestration, integration
+└── styles/          # Global styles
+
+tests/ or src/domain/*.test.ts
+└── unit/            # Domain function tests (100% coverage required)
 ```
 
 **Structure Decision**: [Document the selected structure and reference the real

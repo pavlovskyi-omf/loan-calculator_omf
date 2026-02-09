@@ -100,6 +100,21 @@
 - **[Entity 1]**: [What it represents, key attributes without implementation]
 - **[Entity 2]**: [What it represents, relationships to other entities]
 
+### Architecture Considerations *(for React projects)*
+
+**Domain Layer** (Pure functions in `src/domain/`):
+- What calculations/validations belong here?
+- Edge cases to handle (e.g., zero values, boundary conditions)?
+
+**Component Layer** (UI in `src/components/`):
+- What reusable components are needed?
+- Props interface and state requirements?
+
+**App Layer** (Orchestration in `src/app/`):
+- What state needs to be managed?
+- What derived data needs computation?
+- Event handler responsibilities?
+
 ## Success Criteria *(mandatory)*
 
 <!--

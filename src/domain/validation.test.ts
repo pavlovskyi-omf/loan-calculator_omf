@@ -91,23 +91,56 @@ describe('generateComparisonAmounts', () => {
 
   it('should handle amount at minimum', () => {
     const result = generateComparisonAmounts(1500, delta, min, max)
-    expect(result).toEqual([1500, 1500, 2500])
+    expect(result).toEqual([1500, 2500, 3500])
   })
 
   it('should handle amount at maximum', () => {
     const result = generateComparisonAmounts(100000, delta, min, max)
-    expect(result).toEqual([99000, 100000, 100000])
+    expect(result).toEqual([98000, 99000, 100000])
   })
 
-  it('should de-duplicate when clamping creates identical values', () => {
-    // When committed is 1500, low would be 500 but gets clamped to 1500
-    const result = generateComparisonAmounts(1500, delta, min, max)
-    expect(result).toEqual([1500, 1500, 2500])
-    // Contains duplicates - de-duplication is acceptable but not required
+  it('should handle boundary values with distinct amounts', () => {
+    // At minimum: boundary logic provides distinct values [1500, 2500, 3500]
+    const minResult = generateComparisonAmounts(1500, delta, min, max)
+    expect(minResult).toEqual([1500, 2500, 3500])
+    // At maximum: boundary logic provides distinct values [98000, 99000, 100000]
+    const maxResult = generateComparisonAmounts(100000, delta, min, max)
+    expect(maxResult).toEqual([98000, 99000, 100000])
   })
 
   it('should generate correct amounts for middle range', () => {
     const result = generateComparisonAmounts(50000, delta, min, max)
     expect(result).toEqual([49000, 50000, 51000])
+  })
+})
+
+describe('generateComparisonAmounts - boundary logic', () => {
+  const delta = 1000
+  const min = 1500
+  const max = 100000
+
+  it('at minimum boundary (1500) shows [1500, 2500, 3500]', () => {
+    const result = generateComparisonAmounts(1500, delta, min, max)
+    expect(result).toEqual([1500, 2500, 3500])
+  })
+
+  it('at maximum boundary (100000) shows [98000, 99000, 100000]', () => {
+    const result = generateComparisonAmounts(100000, delta, min, max)
+    expect(result).toEqual([98000, 99000, 100000])
+  })
+
+  it('normal mid-range (5000) shows [4000, 5000, 6000]', () => {
+    const result = generateComparisonAmounts(5000, delta, min, max)
+    expect(result).toEqual([4000, 5000, 6000])
+  })
+
+  it('near minimum (2500) uses standard logic', () => {
+    const result = generateComparisonAmounts(2500, delta, min, max)
+    expect(result).toEqual([1500, 2500, 3500])
+  })
+
+  it('near maximum (99000) uses standard logic', () => {
+    const result = generateComparisonAmounts(99000, delta, min, max)
+    expect(result).toEqual([98000, 99000, 100000])
   })
 })

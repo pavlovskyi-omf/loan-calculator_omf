@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { LoanAmountInput } from '../components/LoanAmountInput'
 import { AprControl } from '../components/AprControl'
 import { AmountTabs } from '../components/AmountTabs'
@@ -40,6 +40,14 @@ function App() {
     () => generateComparisonAmounts(committedAmount, COMPARE_DELTA, MIN_AMOUNT, MAX_AMOUNT),
     [committedAmount]
   )
+
+  // Sync selectedAmountIndex with committedAmount position
+  useEffect(() => {
+    const index = comparisonAmounts.indexOf(committedAmount)
+    if (index !== -1) {
+      setSelectedAmountIndex(index)
+    }
+  }, [committedAmount, comparisonAmounts])
 
   // Calculate payment grid
   const paymentGrid = useMemo(() => {

@@ -34,9 +34,7 @@ export function SelectedDetails({
 
         <div className="flex justify-between">
           <span className="text-gray-600">Monthly Payment:</span>
-          <span className="text-2xl font-bold text-blue-600">
-            {formatCurrency(monthlyPayment)}
-          </span>
+          <span className="text-2xl font-bold text-blue-600">{formatCurrency(monthlyPayment)}</span>
         </div>
 
         <div className="flex justify-between">
@@ -46,9 +44,7 @@ export function SelectedDetails({
 
         <div className="flex justify-between">
           <span className="text-gray-600">Total Interest:</span>
-          <span className="font-medium text-red-600">
-            {formatCurrency(totalInterest)}
-          </span>
+          <span className="font-medium text-red-600">{formatCurrency(totalInterest)}</span>
         </div>
       </div>
     </div>

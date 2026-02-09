@@ -29,13 +29,7 @@ export function LoanAmountInput({
           sx={{ marginBottom: 1 }}
         />
       </div>
-      <Button
-        variant="contained"
-        onClick={onCalculate}
-        disabled={disabled}
-        fullWidth
-        size="large"
-      >
+      <Button variant="contained" onClick={onCalculate} disabled={disabled} fullWidth size="large">
         Calculate
       </Button>
     </div>

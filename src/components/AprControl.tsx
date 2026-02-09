@@ -30,11 +30,7 @@ export function AprControl({ apr, onChange, min, max, step }: AprControlProps) {
       </div>
 
       <div className="flex items-center gap-4">
-        <IconButton
-          onClick={handleDecrement}
-          disabled={apr <= min}
-          aria-label="Decrease APR"
-        >
+        <IconButton onClick={handleDecrement} disabled={apr <= min} aria-label="Decrease APR">
           <Remove />
         </IconButton>
 
@@ -48,11 +44,7 @@ export function AprControl({ apr, onChange, min, max, step }: AprControlProps) {
           sx={{ flex: 1 }}
         />
 
-        <IconButton
-          onClick={handleIncrement}
-          disabled={apr >= max}
-          aria-label="Increase APR"
-        >
+        <IconButton onClick={handleIncrement} disabled={apr >= max} aria-label="Increase APR">
           <Add />
         </IconButton>
       </div>

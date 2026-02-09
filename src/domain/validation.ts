@@ -13,11 +13,7 @@ export interface ValidationResult {
  * @param max - Maximum allowed amount
  * @returns Validation result with optional error message
  */
-export function validateAmount(
-  amount: number | null,
-  min: number,
-  max: number
-): ValidationResult {
+export function validateAmount(amount: number | null, min: number, max: number): ValidationResult {
   if (amount === null) {
     return {
       valid: false,
@@ -57,12 +53,12 @@ export function clampAmount(amount: number, min: number, max: number): number {
 
 /**
  * Generate three comparison amounts for the payment table
- * Returns [committed - delta, committed, committed + delta], all clamped to min/max
+ * Returns boundary-aware amounts: at min/max boundaries, ensures distinct values
  * @param committed - The committed loan amount
  * @param delta - The difference to add/subtract (typically 1000)
  * @param min - Minimum allowed amount
  * @param max - Maximum allowed amount
- * @returns Array of three amounts (may contain duplicates if clamped)
+ * @returns Array of three amounts with boundary logic applied
  */
 export function generateComparisonAmounts(
   committed: number,
@@ -70,9 +66,18 @@ export function generateComparisonAmounts(
   min: number,
   max: number
 ): [number, number, number] {
-  const low = clampAmount(committed - delta, min, max)
-  const mid = committed
-  const high = clampAmount(committed + delta, min, max)
+  // Boundary case: at minimum
+  if (committed === min) {
+    return [min, min + delta, min + 2 * delta]
+  }
 
-  return [low, mid, high]
+  // Boundary case: at maximum
+  if (committed === max) {
+    return [max - 2 * delta, max - delta, max]
+  }
+
+  // Normal case: standard delta logic with clamping
+  const low = clampAmount(committed - delta, min, max)
+  const high = clampAmount(committed + delta, min, max)
+  return [low, committed, high]
 }

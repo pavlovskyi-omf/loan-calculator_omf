@@ -1,4 +1,5 @@
-import { formatCurrency } from '../domain/currency'
+import type { ExchangeRate } from '../domain/currency'
+import { formatCurrency, formatCurrencyWithCode, convertAmount } from '../domain/currency'
 
 interface SelectedDetailsProps {
   amount: number
@@ -6,6 +7,8 @@ interface SelectedDetailsProps {
   monthlyPayment: number
   totalPaid: number
   totalInterest: number
+  selectedCurrency?: string
+  rates?: ExchangeRate | null
 }
 
 export function SelectedDetails({
@@ -14,6 +17,8 @@ export function SelectedDetails({
   monthlyPayment,
   totalPaid,
   totalInterest,
+  selectedCurrency,
+  rates,
 }: SelectedDetailsProps) {
   return (
     <div className="border border-gray-300 rounded-lg p-6 bg-white space-y-4 mt-6">
@@ -22,7 +27,11 @@ export function SelectedDetails({
       <div className="space-y-3">
         <div className="flex justify-between">
           <span className="text-gray-600">Loan Amount:</span>
-          <span className="font-medium">{formatCurrency(amount)}</span>
+          <span className="font-medium">
+            {selectedCurrency && selectedCurrency !== 'USD' && rates
+              ? formatCurrencyWithCode(convertAmount(amount, selectedCurrency, rates), selectedCurrency)
+              : formatCurrency(amount)}
+          </span>
         </div>
 
         <div className="flex justify-between">
@@ -34,17 +43,29 @@ export function SelectedDetails({
 
         <div className="flex justify-between">
           <span className="text-gray-600">Monthly Payment:</span>
-          <span className="text-2xl font-bold text-blue-600">{formatCurrency(monthlyPayment)}</span>
+          <span className="text-2xl font-bold text-blue-600">
+            {selectedCurrency && selectedCurrency !== 'USD' && rates
+              ? formatCurrencyWithCode(convertAmount(monthlyPayment, selectedCurrency, rates), selectedCurrency)
+              : formatCurrency(monthlyPayment)}
+          </span>
         </div>
 
         <div className="flex justify-between">
           <span className="text-gray-600">Total Paid:</span>
-          <span className="font-medium">{formatCurrency(totalPaid)}</span>
+          <span className="font-medium">
+            {selectedCurrency && selectedCurrency !== 'USD' && rates
+              ? formatCurrencyWithCode(convertAmount(totalPaid, selectedCurrency, rates), selectedCurrency)
+              : formatCurrency(totalPaid)}
+          </span>
         </div>
 
         <div className="flex justify-between">
           <span className="text-gray-600">Total Interest:</span>
-          <span className="font-medium text-red-600">{formatCurrency(totalInterest)}</span>
+          <span className="font-medium text-red-600">
+            {selectedCurrency && selectedCurrency !== 'USD' && rates
+              ? formatCurrencyWithCode(convertAmount(totalInterest, selectedCurrency, rates), selectedCurrency)
+              : formatCurrency(totalInterest)}
+          </span>
         </div>
       </div>
     </div>

@@ -130,6 +130,14 @@ Key constants in `src/domain/config.ts`:
 - Terms: 24, 36, 48, 60 months
 - Comparison delta: $1,000
 
+### Environment variables
+
+- `VITE_CURRENCYBEACON_KEY` — Optional for local development; when set, the app will attempt to fetch live exchange rates from Currency Beacon. Create a `.env` file at the project root (copy from `.env.example`) and set this value.
+
+Notes:
+- Values prefixed with `VITE_` are embedded into the client bundle by Vite and therefore visible to end users. For production, prefer a server-side proxy or a restricted API key.
+- Tests and local development do not strictly require a key because the code falls back to cached rates or USD and the test suite mocks network calls.
+
 ## Deployment
 
 The application can be deployed to any static hosting service (GitHub Pages, Netlify, Vercel, etc.).

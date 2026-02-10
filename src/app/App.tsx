@@ -1,9 +1,12 @@
-import { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { LoanAmountInput } from '../components/LoanAmountInput'
 import { AprControl } from '../components/AprControl'
 import { AmountTabs } from '../components/AmountTabs'
 import { PaymentTable } from '../components/PaymentTable'
 import { SelectedDetails } from '../components/SelectedDetails'
+import CurrencyDropdown from '../components/CurrencyDropdown'
+import RateStatusBadge from '../components/RateStatusBadge'
+import Notifications from '../components/Notifications'
 import {
   MIN_AMOUNT,
   MAX_AMOUNT,
@@ -25,6 +28,16 @@ function App() {
   const [apr, setApr] = useState<number>(10)
   const [selectedAmountIndex, setSelectedAmountIndex] = useState<number>(1)
   const [activeTerm, setActiveTerm] = useState<number>(36)
+  const [selectedCurrency, setSelectedCurrency] = useState<string>(() => {
+    try {
+      return localStorage.getItem('selected_currency') || 'USD'
+    } catch (e) {
+      return 'USD'
+    }
+  })
+  const [rates, setRates] = useState<any>(null)
+  const [ratesStatus, setRatesStatus] = useState<string>('')
+  const [notification, setNotification] = useState<string | null>(null)
 
   // Parse input amount
   const inputAmount = useMemo(() => parseCurrencyInput(inputValue), [inputValue])
@@ -105,6 +118,40 @@ function App() {
     setActiveTerm(term)
   }
 
+  // Persist selected currency
+  useEffect(() => {
+    try {
+      localStorage.setItem('selected_currency', selectedCurrency)
+    } catch (e) {
+      // ignore
+    }
+  }, [selectedCurrency])
+
+  // Load rates on start (attempt) and when key present
+  useEffect(() => {
+    let mounted = true
+    ;(async () => {
+      try {
+        const { ensureRates } = await import('../domain/currency')
+        const res = await ensureRates({ symbols: ['EUR', 'UAH'] })
+        if (!mounted) return
+        setRates(res.rates)
+        setRatesStatus(res.status)
+        if (res.status === 'fallback') {
+          setNotification('Exchange rates unavailable — showing USD or cached rates.')
+        }
+        if (res.status === 'error') {
+          setNotification('Exchange rates error — showing USD.')
+        }
+      } catch (e) {
+        // ignore
+      }
+    })()
+    return () => {
+      mounted = false
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -141,10 +188,20 @@ function App() {
                 Estimated Monthly Payment
               </h2>
 
+                <div className="flex items-center justify-end mb-2 space-x-3">
+                  <React.Suspense fallback={null}>
+                    <CurrencyDropdown value={selectedCurrency} onChange={(v) => setSelectedCurrency(v)} />
+                  </React.Suspense>
+                  <RateStatusBadge status={ratesStatus as any} />
+                </div>
+                <Notifications message={notification} onClose={() => setNotification(null)} />
+
               <AmountTabs
                 amounts={comparisonAmounts}
                 selectedIndex={selectedAmountIndex}
                 onSelect={handleAmountTabSelect}
+                selectedCurrency={selectedCurrency}
+                rates={rates}
               />
 
               <div className="mt-6">
@@ -155,6 +212,8 @@ function App() {
                   selectedIndex={selectedAmountIndex}
                   activeTerm={activeTerm}
                   onTermSelect={handleTermSelect}
+                  selectedCurrency={selectedCurrency}
+                  rates={rates}
                 />
               </div>
 
@@ -164,6 +223,8 @@ function App() {
                 monthlyPayment={selectedDetails.monthlyPayment}
                 totalPaid={selectedDetails.totalPaid}
                 totalInterest={selectedDetails.totalInterest}
+                selectedCurrency={selectedCurrency}
+                rates={rates}
               />
             </div>
           </div>

@@ -1,4 +1,5 @@
-import { formatCurrency } from '../domain/currency'
+import { formatCurrency, formatCurrencyWithCode, convertAmount } from '../domain/currency'
+import type { ExchangeRate } from '../domain/currency'
 
 interface PaymentTableProps {
   terms: readonly number[]
@@ -7,6 +8,8 @@ interface PaymentTableProps {
   selectedIndex: number
   activeTerm: number
   onTermSelect: (term: number) => void
+  selectedCurrency?: string
+  rates?: ExchangeRate | null
 }
 
 export function PaymentTable({
@@ -16,6 +19,8 @@ export function PaymentTable({
   selectedIndex,
   activeTerm,
   onTermSelect,
+  selectedCurrency,
+  rates,
 }: PaymentTableProps) {
   return (
     <div className="overflow-x-auto">
@@ -23,14 +28,16 @@ export function PaymentTable({
         <thead>
           <tr>
             <th className="border border-gray-300 bg-gray-50 p-3 text-left">Term</th>
-            {amounts.map((amount, index) => (
+                {amounts.map((amount, index) => (
               <th
                 key={index}
                 className={`border border-gray-300 p-3 text-center ${
                   index === selectedIndex ? 'bg-blue-50' : 'bg-gray-50'
                 }`}
               >
-                {formatCurrency(amount)}
+                    {selectedCurrency && selectedCurrency !== 'USD' && rates
+                      ? formatCurrencyWithCode(convertAmount(amount, selectedCurrency, rates), selectedCurrency)
+                      : formatCurrency(amount)}
               </th>
             ))}
           </tr>
@@ -56,7 +63,9 @@ export function PaymentTable({
                         index === selectedIndex ? 'bg-blue-50 font-semibold' : ''
                       }`}
                     >
-                      {formatCurrency(payment)}
+                      {selectedCurrency && selectedCurrency !== 'USD' && rates
+                        ? formatCurrencyWithCode(convertAmount(payment, selectedCurrency, rates), selectedCurrency)
+                        : formatCurrency(payment)}
                     </td>
                   )
                 })}

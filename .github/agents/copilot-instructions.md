@@ -1,6 +1,6 @@
 # loan-calculator_omf Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2026-02-10
+Auto-generated from all feature plans. Last updated: 2026-03-19
 
 ## Active Technologies
 

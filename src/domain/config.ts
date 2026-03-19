@@ -6,3 +6,9 @@ export const APR_MAX = 36
 export const APR_STEP = 1
 export const TERMS = [24, 36, 48, 60] as const
 export const COMPARE_DELTA = 1000
+
+// i18n configuration
+export const SUPPORTED_LANGUAGES = ['en', 'de', 'uk'] as const
+export const DEFAULT_LANGUAGE = 'en' as const
+
+export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number]

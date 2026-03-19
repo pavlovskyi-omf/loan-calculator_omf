@@ -1,5 +1,6 @@
 import { formatCurrency, formatCurrencyWithCode, convertAmount } from '../domain/currency'
 import type { ExchangeRate } from '../domain/currency'
+import { useI18n } from '../i18n'
 
 interface PaymentTableProps {
   terms: readonly number[]
@@ -22,12 +23,14 @@ export function PaymentTable({
   selectedCurrency,
   rates,
 }: PaymentTableProps) {
+  const { t } = useI18n()
+  
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th className="border border-gray-300 bg-gray-50 p-3 text-left">Term</th>
+            <th className="border border-gray-300 bg-gray-50 p-3 text-left">{t('table.term')}</th>
                 {amounts.map((amount, index) => (
               <th
                 key={index}
@@ -53,7 +56,7 @@ export function PaymentTable({
                 onClick={() => onTermSelect(term)}
                 className={`cursor-pointer hover:bg-gray-50 ${isActive ? 'bg-blue-50' : ''}`}
               >
-                <td className="border border-gray-300 p-3 font-medium">{term} months</td>
+                <td className="border border-gray-300 p-3 font-medium">{term} {t('table.months')}</td>
                 {amounts.map((amount, index) => {
                   const payment = termPayments?.get(amount) ?? 0
                   return (

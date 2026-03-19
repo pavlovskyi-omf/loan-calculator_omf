@@ -1,5 +1,6 @@
 import { Slider, IconButton } from '@mui/material'
 import { Remove, Add } from '@mui/icons-material'
+import { useI18n } from '../i18n'
 
 interface AprControlProps {
   apr: number
@@ -10,6 +11,8 @@ interface AprControlProps {
 }
 
 export function AprControl({ apr, onChange, min, max, step }: AprControlProps) {
+  const { t } = useI18n()
+  
   const handleDecrement = () => {
     if (apr > min) {
       onChange(Math.max(min, apr - step))
@@ -26,11 +29,11 @@ export function AprControl({ apr, onChange, min, max, step }: AprControlProps) {
     <div className="space-y-4">
       <div className="text-center">
         <div className="text-6xl font-bold text-gray-900">{apr}%</div>
-        <div className="text-sm text-gray-600 mt-2">Annual Percentage Rate</div>
+        <div className="text-sm text-gray-600 mt-2">{t('apr.label')}</div>
       </div>
 
       <div className="flex items-center gap-4">
-        <IconButton onClick={handleDecrement} disabled={apr <= min} aria-label="Decrease APR">
+        <IconButton onClick={handleDecrement} disabled={apr <= min} aria-label={t('apr.decrease')}>
           <Remove />
         </IconButton>
 
@@ -44,7 +47,7 @@ export function AprControl({ apr, onChange, min, max, step }: AprControlProps) {
           sx={{ flex: 1 }}
         />
 
-        <IconButton onClick={handleIncrement} disabled={apr >= max} aria-label="Increase APR">
+        <IconButton onClick={handleIncrement} disabled={apr >= max} aria-label={t('apr.increase')}>
           <Add />
         </IconButton>
       </div>

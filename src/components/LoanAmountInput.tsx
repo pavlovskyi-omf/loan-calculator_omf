@@ -1,4 +1,5 @@
 import { TextField, Button } from '@mui/material'
+import { useI18n } from '../i18n'
 
 interface LoanAmountInputProps {
   value: string
@@ -15,22 +16,24 @@ export function LoanAmountInput({
   error,
   disabled,
 }: LoanAmountInputProps) {
+  const { t } = useI18n()
+  
   return (
     <div className="space-y-4">
       <div>
         <TextField
-          label="Loan Amount"
+          label={t('loanAmount.label')}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           error={!!error}
           helperText={error}
           fullWidth
-          placeholder="$7,000"
+          placeholder={t('loanAmount.placeholder')}
           sx={{ marginBottom: 1 }}
         />
       </div>
       <Button variant="contained" onClick={onCalculate} disabled={disabled} fullWidth size="large">
-        Calculate
+        {t('loanAmount.button')}
       </Button>
     </div>
   )

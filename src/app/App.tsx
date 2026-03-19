@@ -5,8 +5,10 @@ import { AmountTabs } from '../components/AmountTabs'
 import { PaymentTable } from '../components/PaymentTable'
 import { SelectedDetails } from '../components/SelectedDetails'
 import CurrencyDropdown from '../components/CurrencyDropdown'
+import LanguageSelector from '../components/LanguageSelector'
 import RateStatusBadge from '../components/RateStatusBadge'
 import Notifications from '../components/Notifications'
+import { useI18n } from '../i18n'
 import {
   MIN_AMOUNT,
   MAX_AMOUNT,
@@ -22,6 +24,8 @@ import { calculateMonthlyPayment, roundToWholeDollars } from '../domain/loanMath
 import './App.css'
 
 function App() {
+  const { t } = useI18n()
+  
   // Primary state
   const [inputValue, setInputValue] = useState<string>('7000')
   const [committedAmount, setCommittedAmount] = useState<number>(7000)
@@ -47,6 +51,12 @@ function App() {
     () => validateAmount(inputAmount, MIN_AMOUNT, MAX_AMOUNT),
     [inputAmount]
   )
+  
+  // Translate validation error message
+  const validationError = useMemo(() => {
+    if (validation.valid || !validation.translationKey) return undefined
+    return t(validation.translationKey, validation.translationValues)
+  }, [validation, t])
 
   // Generate comparison amounts
   const comparisonAmounts = useMemo(
@@ -138,10 +148,10 @@ function App() {
         setRates(res.rates)
         setRatesStatus(res.status)
         if (res.status === 'fallback') {
-          setNotification('Exchange rates unavailable — showing USD or cached rates.')
+          setNotification(t('notifications.ratesStale'))
         }
         if (res.status === 'error') {
-          setNotification('Exchange rates error — showing USD.')
+          setNotification(t('notifications.ratesError'))
         }
       } catch (e) {
         // ignore
@@ -155,7 +165,12 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Personal Loan Calculator</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Personal Loan Calculator</h1>
+          <React.Suspense fallback={null}>
+            <LanguageSelector />
+          </React.Suspense>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Panel */}
@@ -165,7 +180,7 @@ function App() {
                 value={inputValue}
                 onChange={handleAmountChange}
                 onCalculate={handleCalculate}
-                error={validation.valid ? undefined : validation.message}
+                error={validationError}
                 disabled={!validation.valid}
               />
             </div>

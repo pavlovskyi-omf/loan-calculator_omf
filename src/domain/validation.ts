@@ -4,6 +4,15 @@
 export interface ValidationResult {
   valid: boolean
   message?: string
+  translationKey?: string
+  translationValues?: Record<string, string>
+}
+
+/**
+ * Format a number as locale string for display in validation messages
+ */
+function formatAmountForDisplay(amount: number): string {
+  return `$${amount.toLocaleString()}`
 }
 
 /**
@@ -18,20 +27,25 @@ export function validateAmount(amount: number | null, min: number, max: number):
     return {
       valid: false,
       message: 'Amount is required',
+      translationKey: 'validation.invalidFormat',
     }
   }
 
   if (amount < min) {
     return {
       valid: false,
-      message: `Amount must be at least $${min.toLocaleString()}`,
+      message: `Amount must be at least ${formatAmountForDisplay(min)}`,
+      translationKey: 'validation.tooLow',
+      translationValues: { min: formatAmountForDisplay(min) },
     }
   }
 
   if (amount > max) {
     return {
       valid: false,
-      message: `Amount must not exceed $${max.toLocaleString()}`,
+      message: `Amount must not exceed ${formatAmountForDisplay(max)}`,
+      translationKey: 'validation.tooHigh',
+      translationValues: { max: formatAmountForDisplay(max) },
     }
   }
 

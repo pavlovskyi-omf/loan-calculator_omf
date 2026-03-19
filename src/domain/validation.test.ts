@@ -16,6 +16,7 @@ describe('validateAmount', () => {
     expect(result.valid).toBe(false)
     expect(result.message).toBeDefined()
     expect(result.message).toContain('required')
+    expect(result.translationKey).toBe('validation.invalidFormat')
   })
 
   it('should invalidate amount below minimum', () => {
@@ -23,6 +24,8 @@ describe('validateAmount', () => {
     expect(result.valid).toBe(false)
     expect(result.message).toBeDefined()
     expect(result.message).toContain('$1,500')
+    expect(result.translationKey).toBe('validation.tooLow')
+    expect(result.translationValues).toEqual({ min: '$1,500' })
   })
 
   it('should invalidate amount above maximum', () => {
@@ -30,6 +33,8 @@ describe('validateAmount', () => {
     expect(result.valid).toBe(false)
     expect(result.message).toBeDefined()
     expect(result.message).toContain('$100,000')
+    expect(result.translationKey).toBe('validation.tooHigh')
+    expect(result.translationValues).toEqual({ max: '$100,000' })
   })
 
   it('should validate amount at minimum boundary', () => {

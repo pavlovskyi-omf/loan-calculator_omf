@@ -3,7 +3,7 @@
 **Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
 **Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
 ## Summary
 
@@ -22,7 +22,7 @@
 **Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
 **Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
 **Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
+**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
 **Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
 **Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
@@ -31,33 +31,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-**Domain Purity**: ✅ / ⚠️ / ❌
-- [ ] All business logic in pure functions (no framework dependencies)
-- [ ] Domain functions independently testable
-- [ ] Explicit TypeScript types for public APIs
-
-**Test-First Development**: ✅ / ⚠️ / ❌  
-- [ ] Domain layer has 100% test coverage plan
-- [ ] Tests written before/alongside implementation
-- [ ] Edge cases and boundary conditions covered
-
-**UI/Logic Separation**: ✅ / ⚠️ / ❌
-- [ ] Clear layer boundaries (domain/component/app)
-- [ ] Components delegate to domain functions
-- [ ] No business logic in UI components
-
-**Configuration-Driven**: ✅ / ⚠️ / ❌
-- [ ] Constants centralized in config
-- [ ] No magic numbers in components
-- [ ] Business rules documented in config
-
-**Accessibility & UX**: ✅ / ⚠️ / ❌
-- [ ] Keyboard navigation planned
-- [ ] ARIA attributes for screen readers
-- [ ] Responsive design considerations
-- [ ] Form validation with inline feedback
-
-[Additional gates from constitution if applicable]
+[Gates determined based on constitution file]
 
 ## Project Structure
 
@@ -115,16 +89,6 @@ api/
 
 ios/ or android/
 └── [platform-specific structure: feature modules, UI flows, platform tests]
-
-# [REMOVE IF UNUSED] Option 4: React SPA with domain layer (client-side only)
-src/
-├── domain/          # Pure functions: calculations, validation, formatting
-├── components/      # Presentational UI components
-├── app/             # State orchestration, integration
-└── styles/          # Global styles
-
-tests/ or src/domain/*.test.ts
-└── unit/            # Domain function tests (100% coverage required)
 ```
 
 **Structure Decision**: [Document the selected structure and reference the real

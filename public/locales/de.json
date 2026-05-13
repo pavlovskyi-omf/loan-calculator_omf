@@ -1,0 +1,42 @@
+{
+  "loanAmount": {
+    "label": "Kreditbetrag",
+    "placeholder": "7.000 €",
+    "button": "Berechnen"
+  },
+  "apr": {
+    "label": "Effektiver Jahreszins",
+    "decrease": "Zinssatz verringern",
+    "increase": "Zinssatz erhöhen"
+  },
+  "table": {
+    "term": "Laufzeit",
+    "months": "Monate"
+  },
+  "details": {
+    "heading": "Ausgewähltes Szenario",
+    "loanAmount": "Kreditbetrag:",
+    "term": "Laufzeit:",
+    "monthlyPayment": "Monatliche Rate:",
+    "totalPaid": "Gesamt gezahlt:",
+    "totalInterest": "Gesamtzinsen:"
+  },
+  "validation": {
+    "tooLow": "Der Betrag muss mindestens {{min}} betragen",
+    "tooHigh": "Der Betrag darf {{max}} nicht überschreiten",
+    "invalidFormat": "Bitte geben Sie einen gültigen Betrag ein"
+  },
+  "currency": {
+    "label": "Währung"
+  },
+  "language": {
+    "label": "Sprache",
+    "loading": "Sprache wird geladen...",
+    "error": "Fehler beim Laden der Sprache. Bitte versuchen Sie es erneut."
+  },
+  "notifications": {
+    "ratesLoaded": "Wechselkurse erfolgreich aktualisiert",
+    "ratesError": "Fehler beim Laden der Wechselkurse",
+    "ratesStale": "Verwende zwischengespeicherte Wechselkurse"
+  }
+}

@@ -1,0 +1,42 @@
+export const enTranslations = {
+  loanAmount: {
+    label: 'Loan Amount',
+    placeholder: '$7,000',
+    button: 'Calculate',
+  },
+  apr: {
+    label: 'Annual Percentage Rate',
+    decrease: 'Decrease APR',
+    increase: 'Increase APR',
+  },
+  table: {
+    term: 'Term',
+    months: 'months',
+  },
+  details: {
+    heading: 'Selected Scenario',
+    loanAmount: 'Loan Amount:',
+    term: 'Term:',
+    monthlyPayment: 'Monthly Payment:',
+    totalPaid: 'Total Paid:',
+    totalInterest: 'Total Interest:',
+  },
+  validation: {
+    tooLow: 'Amount must be at least {{min}}',
+    tooHigh: 'Amount must not exceed {{max}}',
+    invalidFormat: 'Please enter a valid amount',
+  },
+  currency: {
+    label: 'Currency',
+  },
+  language: {
+    label: 'Language',
+    loading: 'Loading language...',
+    error: 'Failed to load language. Please try again.',
+  },
+  notifications: {
+    ratesLoaded: 'Exchange rates updated successfully',
+    ratesError: 'Failed to load exchange rates',
+    ratesStale: 'Using cached exchange rates',
+  },
+}

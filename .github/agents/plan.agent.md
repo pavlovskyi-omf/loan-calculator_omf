@@ -1,7 +1,7 @@
 ---
 name: TDD - Planner Agent
 description: 'Architect and planner to create detailed implementation plans.'
-tools: ['web/fetch', 'web/githubRepo', 'read/problems', 'search/usages', 'search', 'todo', 'agent']
+tools: ['web/fetch', 'web/githubRepo', 'read', 'search', 'todo', 'agent', edit, vscode, execute]
 handoffs:
 - label: Start Implementation
   agent: TDD - Implementation Agent

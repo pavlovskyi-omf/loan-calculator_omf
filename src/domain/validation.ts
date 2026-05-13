@@ -1,0 +1,97 @@
+/**
+ * Validation result for amount input
+ */
+export interface ValidationResult {
+  valid: boolean
+  message?: string
+  translationKey?: string
+  translationValues?: Record<string, string>
+}
+
+/**
+ * Format a number as locale string for display in validation messages
+ */
+function formatAmountForDisplay(amount: number): string {
+  return `$${amount.toLocaleString()}`
+}
+
+/**
+ * Validate that an amount is within the specified range
+ * @param amount - Amount to validate (can be null)
+ * @param min - Minimum allowed amount
+ * @param max - Maximum allowed amount
+ * @returns Validation result with optional error message
+ */
+export function validateAmount(amount: number | null, min: number, max: number): ValidationResult {
+  if (amount === null) {
+    return {
+      valid: false,
+      message: 'Amount is required',
+      translationKey: 'validation.invalidFormat',
+    }
+  }
+
+  if (amount < min) {
+    return {
+      valid: false,
+      message: `Amount must be at least ${formatAmountForDisplay(min)}`,
+      translationKey: 'validation.tooLow',
+      translationValues: { min: formatAmountForDisplay(min) },
+    }
+  }
+
+  if (amount > max) {
+    return {
+      valid: false,
+      message: `Amount must not exceed ${formatAmountForDisplay(max)}`,
+      translationKey: 'validation.tooHigh',
+      translationValues: { max: formatAmountForDisplay(max) },
+    }
+  }
+
+  return {
+    valid: true,
+  }
+}
+
+/**
+ * Clamp an amount to be within the specified range
+ * @param amount - Amount to clamp
+ * @param min - Minimum allowed amount
+ * @param max - Maximum allowed amount
+ * @returns Clamped amount
+ */
+export function clampAmount(amount: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, amount))
+}
+
+/**
+ * Generate three comparison amounts for the payment table
+ * Returns boundary-aware amounts: at min/max boundaries, ensures distinct values
+ * @param committed - The committed loan amount
+ * @param delta - The difference to add/subtract (typically 1000)
+ * @param min - Minimum allowed amount
+ * @param max - Maximum allowed amount
+ * @returns Array of three amounts with boundary logic applied
+ */
+export function generateComparisonAmounts(
+  committed: number,
+  delta: number,
+  min: number,
+  max: number
+): [number, number, number] {
+  // Boundary case: at minimum
+  if (committed === min) {
+    return [min, min + delta, min + 2 * delta]
+  }
+
+  // Boundary case: at maximum
+  if (committed === max) {
+    return [max - 2 * delta, max - delta, max]
+  }
+
+  // Normal case: standard delta logic with clamping
+  const low = clampAmount(committed - delta, min, max)
+  const high = clampAmount(committed + delta, min, max)
+  return [low, committed, high]
+}
